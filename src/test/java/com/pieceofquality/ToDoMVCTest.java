@@ -2,9 +2,9 @@ package com.pieceofquality;
 
 import org.junit.Test;
 
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$$;
-import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.CollectionCondition.empty;
+import static com.codeborne.selenide.CollectionCondition.exactTexts;
+import static com.codeborne.selenide.Selenide.*;
 
 /**
   1 create task1
@@ -30,16 +30,16 @@ public class ToDoMVCTest{
         $("#new-todo").setValue("Task2").pressEnter();
         $("#new-todo").setValue("Task3").pressEnter();
         $("#new-todo").setValue("Task4").pressEnter();
-        $$("#todo-list li").shouldHaveSize(4);
+        $$("#todo-list li").shouldHave(exactTexts("Task1", "Task2", "Task3", "Task4"));
 
         /*Удаляем задачу №2, проверяем, что она отсутствует */
-        $("#todo-list li[data-index*=\"1\"]").hover();
-        $("#todo-list li[data-index*=\"1\"] .destroy").click();
-        $$("#todo-list li").shouldHaveSize(3);
+        $("#todo-list li[data-index='1']").hover();
+        $("#todo-list li[data-index='1'] .destroy").click();
+        $$("#todo-list li").shouldHave(exactTexts("Task1", "Task3", "Task4"));
 
         /*Отмечаем задачу №4 как выполненную. Проверяем, что она вычеркнута*/
-        $("#todo-list li[data-index*=\"3\"] .toggle").click();
-        $("#todo-list li[data-index*=\"3\"] .completed").shouldBe();
+        $("#todo-list li[data-index='3'] .toggle").click();
+        $("#filters li .selected").click();
 
 
         /*Очищаем выполненные задачи (а это №4). Проверяем ее отсутствие*/
@@ -49,7 +49,7 @@ public class ToDoMVCTest{
         /*Выделяем весь список задач и проверяем, что задач больше нет*/
         $("#toggle-all").click();
         $("#clear-completed").click();
-        $$("#todo-list li").shouldHaveSize(0);
+        $$("#todo-list li").shouldBe(empty);
 
     }
 
