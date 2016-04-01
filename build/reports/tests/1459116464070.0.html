@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" data-framework="troopjs"><head>
+		<meta charset="utf-8" />
+		<meta content="width=device-width, initial-scale=1" name="viewport" />
+		<title>TroopJS • TodoMVC</title>
+		<link href="node_modules/todomvc-common/base.css" rel="stylesheet" />
+		<link href="node_modules/todomvc-app-css/index.css" rel="stylesheet" />
+		<link href="css/app.css" rel="stylesheet" />
+	<script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="index" src="./index.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="jquery" src="node_modules/jquery/dist/jquery.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="troopjs/main" src="node_modules/troopjs/main.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="troopjs-widget/main" src="node_modules/troopjs-widget/main.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="troopjs-route-hash/main" src="node_modules/troopjs-route-hash/main.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="mu-emitter/main" src="node_modules/mu-emitter/main.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="mu-merge/main" src="node_modules/mu-merge/main.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="mu-getargs/main" src="node_modules/mu-getargs/main.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="mu-emitter/config" src="node_modules/mu-emitter/config.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="when/when" src="node_modules/when/when.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="mu-selector-set/main" src="node_modules/mu-selector-set/main.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="mu-error/factory" src="node_modules/mu-error/factory.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="mu-jquery-destroy/main" src="node_modules/mu-jquery-destroy/main.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="mu-jquery-hashchange/jquery.hashchange" src="node_modules/mu-jquery-hashchange/jquery.hashchange.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="mu-getargs/src/getargs" src="node_modules/mu-getargs/src/getargs.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="mu-emitter/handler" src="node_modules/mu-emitter/handler.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="mu-emitter/executor" src="node_modules/mu-emitter/executor.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="mu-emitter/error" src="node_modules/mu-emitter/error.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="mu-selector-set/src/SelectorSet" src="node_modules/mu-selector-set/src/SelectorSet.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="when/lib/decorators/timed" src="node_modules/when/lib/decorators/timed.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="when/lib/decorators/array" src="node_modules/when/lib/decorators/array.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="when/lib/decorators/flow" src="node_modules/when/lib/decorators/flow.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="when/lib/decorators/fold" src="node_modules/when/lib/decorators/fold.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="when/lib/decorators/inspect" src="node_modules/when/lib/decorators/inspect.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="when/lib/decorators/iterate" src="node_modules/when/lib/decorators/iterate.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="when/lib/decorators/progress" src="node_modules/when/lib/decorators/progress.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="when/lib/decorators/with" src="node_modules/when/lib/decorators/with.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="when/lib/decorators/unhandledRejection" src="node_modules/when/lib/decorators/unhandledRejection.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="when/lib/TimeoutError" src="node_modules/when/lib/TimeoutError.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="when/lib/Promise" src="node_modules/when/lib/Promise.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="when/lib/apply" src="node_modules/when/lib/apply.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="mu-jquery-destroy/src/jQueryDestroy" src="node_modules/mu-jquery-destroy/src/jQueryDestroy.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="mu-selector-set/src/classifier" src="node_modules/mu-selector-set/src/classifier.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="mu-selector-set/src/splitter" src="node_modules/mu-selector-set/src/splitter.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="mu-selector-set/src/Subsets" src="node_modules/mu-selector-set/src/Subsets.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="mu-selector-set/src/matchesSelector" src="node_modules/mu-selector-set/src/matchesSelector.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="when/lib/env" src="node_modules/when/lib/env.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="when/lib/state" src="node_modules/when/lib/state.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="when/lib/format" src="node_modules/when/lib/format.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="when/lib/makePromise" src="node_modules/when/lib/makePromise.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="when/lib/Scheduler" src="node_modules/when/lib/Scheduler.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="mu-selector-set/src/MappedLists" src="node_modules/mu-selector-set/src/MappedLists.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="todos-troopjs/create" src="node_modules/../js/create.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="todos-troopjs/hide" src="node_modules/../js/hide.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="todos-troopjs/toggle" src="node_modules/../js/toggle.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="todos-troopjs/list" src="node_modules/../js/list.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="todos-troopjs/count" src="node_modules/../js/count.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="todos-troopjs/filter" src="node_modules/../js/filter.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="todos-troopjs/clear" src="node_modules/../js/clear.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="todos-troopjs/component" src="node_modules/../js/component.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="poly/array" src="node_modules/poly/array.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="poly/string" src="node_modules/poly/string.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="poly/json" src="node_modules/poly/json.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="poly/lib/_base" src="node_modules/poly/lib/_base.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="poly/support/json3" src="node_modules/poly/support/json3.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="poly/lib/_array" src="node_modules/poly/lib/_array.js"></script></head>
+	<body class="learn-bar"><aside class="learn"><header> <h3>TroopJS</h3> <span class="source-links">   <h5>Example</h5> <a href="https://github.com/tastejs/todomvc/tree/gh-pages/examples/troopjs_require">Source</a>   </span> </header> <hr /> <blockquote class="quote speech-bubble"> <p>The simple js framework that does as little as possible, then stays out of the way.</p> <footer> <a href="http://troopjs.com">TroopJS</a> </footer> </blockquote>  <hr />  <h4>Official Resources</h4> <ul>  <li> <a href="https://github.com/troopjs/troopjs-todos">TODOs Application (latest)</a> </li>  <li> <a href="https://github.com/troopjs">TroopJS on GitHub</a> </li>  </ul>   <footer> <hr /> <em>If you have other helpful links to share, or find any of the links above no longer work, please <a href="https://github.com/tastejs/todomvc/issues">let us know</a>.</em> </footer></aside>
+		<section class="todoapp">
+			<header class="header">
+				<h1>todos</h1>
+				<input autofocus="" placeholder="What needs to be done?" class="new-todo" data-woven="todos-troopjs/create@8" />
+			</header>
+			<section class="main" data-woven="todos-troopjs/hide@6" style="display: block;">
+				<input type="checkbox" class="toggle-all" data-woven="todos-troopjs/toggle@12" />
+				<label for="toggle-all">Mark all as complete</label>
+				<ul class="todo-list" data-woven="todos-troopjs/list@11">
+					<script async="" src="https://www.google-analytics.com/analytics.js"></script><script type="text/x-html-template">
+					&lt;li&gt;
+						&lt;div class="view"&gt;
+							&lt;input class="toggle" type="checkbox"&gt;
+							&lt;label&gt;&lt;/label&gt;
+							&lt;button class="destroy"&gt;&lt;/button&gt;
+						&lt;/div&gt;
+						&lt;input class="edit"&gt;
+					&lt;/li&gt;
+					</script>
+				<li class="active">
+						<div class="view">
+							<input type="checkbox" class="toggle" />
+							<label>Go hell</label>
+							<button class="destroy"></button>
+						</div>
+						<input class="edit" />
+					</li><li class="active">
+						<div class="view">
+							<input type="checkbox" class="toggle" />
+							<label>Go hell too</label>
+							<button class="destroy"></button>
+						</div>
+						<input class="edit" />
+					</li></ul>
+			</section>
+			<footer class="footer" data-woven="todos-troopjs/hide@7" style="display: block;">
+				<span class="todo-count" data-woven="todos-troopjs/count@10"><strong>2</strong> items left</span>
+				<ul class="filters" data-woven="todos-troopjs/filter@9">
+					<li>
+						<a href="#/" class="selected">All</a>
+					</li>
+					<li>
+						<a href="#/active">Active</a>
+					</li>
+					<li>
+						<a href="#/completed">Completed</a>
+					</li>
+				</ul>
+				<button class="clear-completed" style="display: none;" data-woven="todos-troopjs/clear@13">Clear completed</button>
+			</footer>
+		</section>
+		<footer class="info">
+			<p>Double-click to edit a todo</p>
+			<p>Created by <a href="http://mikael.karon.se">Mikael Karon</a> for the <a href="http://troopjs.com">TroopJS</a> team</p>
+			<p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
+		</footer>
+		<script src="node_modules/todomvc-common/base.js"></script>
+		<script data-main="index.js" src="node_modules/requirejs/require.js"></script>
+	
+
+</body></html>
