@@ -37,14 +37,17 @@ public class ToDoMVCTest{
         $("#todo-list li[data-index='1'] .destroy").click();
         $$("#todo-list li").shouldHave(exactTexts("Task1", "Task3", "Task4"));
 
-        /*Отмечаем задачу №4 как выполненную. Проверяем, что она вычеркнута*/
+        /*Проверяем, что теперь задача №4 - выполненная*/
         $("#todo-list li[data-index='3'] .toggle").click();
-        $("#filters li .selected").click();
-
+        $("a[href='#/completed']").click();
+        $$("#todo-list li .completed").shouldHave(exactTexts("Task4"));
+        $("a[href='#/active']").click();
+        $$("#todo-list li").shouldHave(exactTexts("Task1", "Task3"));
 
         /*Очищаем выполненные задачи (а это №4). Проверяем ее отсутствие*/
+        $("a[href='#/']").click();
         $("#clear-completed").click();
-        $$("#todo-list li").shouldHaveSize(2);
+        $$("#todo-list li").shouldHave(exactTexts("Task1", "Task3"));
 
         /*Выделяем весь список задач и проверяем, что задач больше нет*/
         $("#toggle-all").click();
