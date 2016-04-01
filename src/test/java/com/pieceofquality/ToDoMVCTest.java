@@ -4,8 +4,6 @@ import org.junit.Test;
 
 import static com.codeborne.selenide.CollectionCondition.empty;
 import static com.codeborne.selenide.CollectionCondition.exactTexts;
-import static com.codeborne.selenide.Condition.hidden;
-import static com.codeborne.selenide.Condition.present;
 import static com.codeborne.selenide.Selenide.*;
 
 /**
@@ -27,29 +25,24 @@ public class ToDoMVCTest{
 
         open("https://todomvc4tasj.herokuapp.com/");
 
-        //Ability to create some tasks [Task1-4]
+        //create tasks
         $("#new-todo").setValue("Task1").pressEnter();
         $("#new-todo").setValue("Task2").pressEnter();
         $("#new-todo").setValue("Task3").pressEnter();
         $("#new-todo").setValue("Task4").pressEnter();
         $$("#todo-list li").shouldHave(exactTexts("Task1", "Task2", "Task3", "Task4"));
 
-        //Deletion of any task [Task2]
+        //delete task2
         $("#todo-list li:nth-child(2)").hover();
         $("#todo-list li:nth-child(2) .destroy").click();
         $$("#todo-list li").shouldHave(exactTexts("Task1", "Task3", "Task4"));
 
-        //Completion of task [Task4]
-        $("#clear-completed").shouldBe(hidden);
+        //complete task4
         $("#todo-list li:nth-child(3) .toggle").click();
-        $("#clear-completed").shouldBe(present);
-
-        //Clearance of task [Task4]
-        $("a[href='#/']").click();
         $("#clear-completed").click();
         $$("#todo-list li").shouldHave(exactTexts("Task1", "Task3"));
 
-        // Batch clearance
+        //complete all & clear completed
         $("#toggle-all").click();
         $("#clear-completed").click();
         $$("#todo-list li").shouldBe(empty);
