@@ -7,16 +7,15 @@ import static com.codeborne.selenide.CollectionCondition.exactTexts;
 import static com.codeborne.selenide.Selenide.*;
 
 /**
-  1 create task1
-  2 create task2
-  3 create task3
-  4 create task4
-  5 delete task2
-  6 mark task4 as completed
-  7 clear completed
-  8 mark all as completed
-  9 clear completed
-
+ 1 create task1
+ 2 create task2
+ 3 create task3
+ 4 create task4
+ 5 delete task2
+ 6 mark task4 as completed
+ 7 clear completed
+ 8 mark all as completed
+ 9 clear completed
  */
 public class ToDoMVCTest{
 
@@ -40,9 +39,9 @@ public class ToDoMVCTest{
         /*Проверяем, что теперь задача №4 - выполненная*/
         $("#todo-list li[data-index='3'] .toggle").click();
         $("a[href='#/completed']").click();
-        $$("#todo-list li .completed").shouldHave(exactTexts("Task4"));
+        $$("#todo-list li").shouldHave(exactTexts("", "", "Task4"));
         $("a[href='#/active']").click();
-        $$("#todo-list li").shouldHave(exactTexts("Task1", "Task3"));
+        $$("#todo-list li").shouldHave(exactTexts("Task1", "Task3", ""));
 
         /*Очищаем выполненные задачи (а это №4). Проверяем ее отсутствие*/
         $("a[href='#/']").click();
