@@ -1,9 +1,11 @@
 package com.pieceofquality;
 
+import com.codeborne.selenide.ElementsCollection;
 import org.junit.Test;
 
 import static com.codeborne.selenide.CollectionCondition.empty;
 import static com.codeborne.selenide.CollectionCondition.exactTexts;
+import static com.codeborne.selenide.Condition.exactText;
 import static com.codeborne.selenide.Selenide.*;
 
 /**
@@ -22,31 +24,52 @@ public class ToDoMVCTest{
 
     @Test
     public void testTasksFlow(){
-
         open("https://todomvc4tasj.herokuapp.com/");
 
-        //create tasks
-        $("#new-todo").setValue("Task1").pressEnter();
-        $("#new-todo").setValue("Task2").pressEnter();
-        $("#new-todo").setValue("Task3").pressEnter();
-        $("#new-todo").setValue("Task4").pressEnter();
-        $$("#todo-list li").shouldHave(exactTexts("Task1", "Task2", "Task3", "Task4"));
+        add("1", "2", "3", "4");
+        assertTasksAre("1", "2", "3", "4");
 
-        //delete task2
-        $("#todo-list li:nth-child(2)").hover();
-        $("#todo-list li:nth-child(2) .destroy").click();
-        $$("#todo-list li").shouldHave(exactTexts("Task1", "Task3", "Task4"));
+        delete("2");
+        assertTasksAre("1", "3", "4");
 
-        //complete task4
-        $("#todo-list li:nth-child(3) .toggle").click();
+        tasks.find(exactText("4")).$(".toggle").click();
+        toggle("4");
+        clearCompleted();
+        assertTasksAre("1", "3");
+
+        toggleAll();
+        clearCompleted();
+        tasks.shouldBe(empty);
+
+    }
+
+   ElementsCollection tasks = $$("#todo-list li");
+
+
+   private void toggle(String text){
+        tasks.find(exactText("text")).$(".toggle").click();
+    }
+
+   private void assertTasksAre(String... taskTexts){
+        tasks.shouldHave(exactTexts("taskTexts"));
+    }
+
+   private void toggleAll(){
+       $("#toggle-all").click();
+   }
+
+    private void clearCompleted() {
         $("#clear-completed").click();
-        $$("#todo-list li").shouldHave(exactTexts("Task1", "Task3"));
+    }
 
-        //complete all & clear completed
-        $("#toggle-all").click();
-        $("#clear-completed").click();
-        $$("#todo-list li").shouldBe(empty);
+    private void add(String... taskTexts){
+        for (String text: taskTexts) {
+            $("#new-todo").setValue(text).pressEnter();
+        }
+    }
 
+    private void delete(String taskText){
+        tasks.find(exactText(taskText)).hover().$(".destroy").click();
     }
 
 }
