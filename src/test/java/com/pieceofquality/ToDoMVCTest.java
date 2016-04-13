@@ -32,9 +32,9 @@ public class ToDoMVCTest{
         delete("2");
         assertTasksAre("1", "3", "4");
 
-        tasks.find(exactText("4")).$(".toggle").click();
         toggle("4");
-        clearCompleted();
+        $("#clear-completed").click();
+
         assertTasksAre("1", "3");
 
         toggleAll();
@@ -46,29 +46,29 @@ public class ToDoMVCTest{
    ElementsCollection tasks = $$("#todo-list li");
 
 
-   private void toggle(String text){
-        tasks.find(exactText("text")).$(".toggle").click();
+   private void toggle(String taskText){
+        tasks.find(exactText(taskText)).$(".toggle").click();
     }
 
    private void assertTasksAre(String... taskTexts){
-        tasks.shouldHave(exactTexts("taskTexts"));
+        tasks.shouldHave(exactTexts(taskTexts));
     }
 
    private void toggleAll(){
        $("#toggle-all").click();
    }
 
-    private void clearCompleted() {
+   private void clearCompleted() {
         $("#clear-completed").click();
     }
 
-    private void add(String... taskTexts){
+   private void add(String... taskTexts){
         for (String text: taskTexts) {
             $("#new-todo").setValue(text).pressEnter();
         }
     }
 
-    private void delete(String taskText){
+   private void delete(String taskText){
         tasks.find(exactText(taskText)).hover().$(".destroy").click();
     }
 
