@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 
 import static com.codeborne.selenide.CollectionCondition.exactTexts;
+import static com.codeborne.selenide.Condition.cssClass;
 import static com.codeborne.selenide.Condition.exactText;
 import static com.codeborne.selenide.Selenide.*;
 
@@ -14,20 +15,22 @@ public class SmokeE2EToDoMVCTest {
     public void testTasksFlow() {
         open("https://todomvc4tasj.herokuapp.com/");
         add("1", "2");
-        edit("2");
+        edit("2", "2 edited");
         assertTasksAre("1", "2 edited");
         toggle("1");
-
-        toggleAll();
         filter("Completed");
-//        assertTasksAre("1", "2 edited");
+        toggleAll();
+        delete("2 edited");
+        filter("Active");
+        assertTasksAre("");
+        filter("All");
         clearCompleted();
 
     }
 
-    private void edit(String edtext) {
-        tasks.find(exactText(edtext)).doubleClick();
-        $(".active.editing .edit").setValue(edtext + " edited").pressEnter();
+    private void edit(String taskOldText, String taskNewText) {
+        tasks.find(exactText(taskOldText)).doubleClick();
+        tasks.find(cssClass("editing")).$(".edit").setValue(taskNewText).pressEnter();
     }
 
 
@@ -59,7 +62,8 @@ public class SmokeE2EToDoMVCTest {
     private void delete(String taskText) {
         tasks.find(exactText(taskText)).hover().$(".destroy").click();
     }
-    private void filter(String filterText){$(By.linkText(filterText)).click();}
+
+    private void filter(String taskText){$(By.linkText(taskText)).click();}
 }
 
 
