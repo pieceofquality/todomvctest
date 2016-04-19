@@ -2,8 +2,8 @@ package com.pieceofquality1;
 
 import com.codeborne.selenide.ElementsCollection;
 import org.junit.Test;
-import org.openqa.selenium.By;
 
+import static com.codeborne.selenide.CollectionCondition.empty;
 import static com.codeborne.selenide.CollectionCondition.exactTexts;
 import static com.codeborne.selenide.Condition.cssClass;
 import static com.codeborne.selenide.Condition.exactText;
@@ -13,26 +13,49 @@ public class SmokeE2EToDoMVCTest {
 
     @Test
     public void testTasksFlow() {
-        open("https://todomvc4tasj.herokuapp.com/");
-        add("1", "2");
-        edit("2", "2 edited");
-        assertTasksAre("1", "2 edited");
-        toggle("1");
-        filter("Completed");
-        toggleAll();
-        delete("2 edited");
-        filter("Active");
-        assertTasksAre("");
-        filter("All");
-        clearCompleted();
 
+        open("https://todomvc4tasj.herokuapp.com/");
+
+        //editing
+        add("1", "2");
+        edit("1", "1 edited");
+        assertTasksAre("1 edited", "2");
+
+        //complete
+        toggle("1 edited");
+        filterSwitchToActive();
+        assertTasksAre("", "2");
+
+        //reopen
+        filterSwitchToCompleted();
+        toggle("1 edited");
+        filterSwitchToActive();
+        assertTasksAre("1 edited", "2");
+
+
+       //cancel edit
+        filterSwitchToAll();
+        cancelEdit("1 edited", "1");
+
+
+        //delete
+        delete("1 edited");
+        assertTasksAre("2");
+
+        //complete all
+        toggleAll();
+        clearCompleted();
+        assertTasksEmpty();
     }
 
     private void edit(String taskOldText, String taskNewText) {
         tasks.find(exactText(taskOldText)).doubleClick();
         tasks.find(cssClass("editing")).$(".edit").setValue(taskNewText).pressEnter();
     }
-
+    private void cancelEdit(String taskOldText,String taskNewText) {
+        tasks.find(exactText(taskOldText)).doubleClick();
+        tasks.find(cssClass("editing")).$(".edit").setValue(taskNewText).pressEscape();
+    }
 
     ElementsCollection tasks = $$("#todo-list li");
 
@@ -63,7 +86,21 @@ public class SmokeE2EToDoMVCTest {
         tasks.find(exactText(taskText)).hover().$(".destroy").click();
     }
 
-    private void filter(String taskText){$(By.linkText(taskText)).click();}
+
+    private void filterSwitchToAll() {
+        $("[href='#/']").click();
+    }
+
+    private void filterSwitchToActive() {
+        $("[href='#/active']").click();
+    }
+
+    private void filterSwitchToCompleted() {
+        $("[href='#/completed']").click();
+    }
+
+    private void assertTasksEmpty() {
+        tasks.shouldBe(empty);
+    }
+
 }
-
-
