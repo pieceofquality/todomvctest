@@ -7,9 +7,10 @@ import static com.codeborne.selenide.CollectionCondition.empty;
 import static com.codeborne.selenide.CollectionCondition.exactTexts;
 import static com.codeborne.selenide.Condition.cssClass;
 import static com.codeborne.selenide.Condition.exactText;
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
 
-public class SmokeE2EToDoMVCTest {
+public class ToDoMVCTest {
 
     @Test
     public void testTasksFlow() {
@@ -17,25 +18,24 @@ public class SmokeE2EToDoMVCTest {
         open("https://todomvc4tasj.herokuapp.com/");
 
         //editing
-        add("1", "2");
+        add("1");
         edit("1", "1 edited");
-        assertTasksAre("1 edited", "2");
+        assertTasksAre("1 edited");
 
         //complete
         toggle("1 edited");
-        filterSwitchToActive();
-        assertTasksAre("", "2");
+        assertVisible("1 edited");
 
         //reopen
-        filterSwitchToCompleted();
+        filterCompleted();
         toggle("1 edited");
-        filterSwitchToActive();
-        assertTasksAre("1 edited", "2");
+        assertNoVisible();
 
 
        //cancel edit
-        filterSwitchToAll();
-        cancelEdit("1 edited", "1");
+        filterActive();
+        add("2");
+        cancelEdit("2", "2 edited");
 
 
         //delete
@@ -87,15 +87,15 @@ public class SmokeE2EToDoMVCTest {
     }
 
 
-    private void filterSwitchToAll() {
+    private void filterAll() {
         $("[href='#/']").click();
     }
 
-    private void filterSwitchToActive() {
+    private void filterActive() {
         $("[href='#/active']").click();
     }
 
-    private void filterSwitchToCompleted() {
+    private void filterCompleted() {
         $("[href='#/completed']").click();
     }
 
@@ -103,4 +103,10 @@ public class SmokeE2EToDoMVCTest {
         tasks.shouldBe(empty);
     }
 
+    private void assertVisible(String... tasksTexts) {
+        tasks.filter(visible).shouldHave(exactTexts(tasksTexts));
+    }
+    private void assertNoVisible() {
+        tasks.filter(visible).shouldBe(empty);
+    }
 }
