@@ -1,6 +1,7 @@
 package com.pieceofquality1;
 
 import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.SelenideElement;
 import org.junit.Test;
 
 import static com.codeborne.selenide.CollectionCondition.empty;
@@ -18,7 +19,7 @@ public class ToDoMVCTest {
         open("https://todomvc4tasj.herokuapp.com/");
 
         add("1");
-        edit("1", "1 edited");
+        edit("1", "1 edited").pressEnter();
         assertTasksAre("1 edited");
 
         //complete
@@ -33,7 +34,7 @@ public class ToDoMVCTest {
 
         filterActive();
         add("2");
-        cancelEdit("2", "2 edited");
+        edit("2", "2 edited").pressEscape();
         assertTasksAre("2");
 
         //delete
@@ -48,14 +49,20 @@ public class ToDoMVCTest {
         assertTasksEmpty();
     }
 
-    private void edit(String taskOldText, String taskNewText) {
-        tasks.find(exactText(taskOldText)).doubleClick();
-        tasks.find(cssClass("editing")).$(".edit").setValue(taskNewText).pressEnter();
+    private SelenideElement edit (String oldTaskText, String newTaskText) {
+        tasks.find(exactText(oldTaskText)).doubleClick();
+       return tasks.find(cssClass("editing")).$(".edit").setValue(newTaskText);
+
     }
-    private void cancelEdit(String taskOldText,String taskNewText) {
-        tasks.find(exactText(taskOldText)).doubleClick();
-        tasks.find(cssClass("editing")).$(".edit").setValue(taskNewText).pressEscape();
-    }
+
+    //    private void edit(String taskOldText, String taskNewText) {
+//        tasks.find(exactText(taskOldText)).doubleClick();
+//        tasks.find(cssClass("editing")).$(".edit").setValue(taskNewText).pressEnter();
+//    }
+//    private void cancelEdit(String taskOldText,String taskNewText) {
+//        tasks.find(exactText(taskOldText)).doubleClick();
+//        tasks.find(cssClass("editing")).$(".edit").setValue(taskNewText).pressEscape();
+//    }
 
     ElementsCollection tasks = $$("#todo-list li");
 
@@ -109,4 +116,6 @@ public class ToDoMVCTest {
     private void assertNoVisible() {
         tasks.filter(visible).shouldBe(empty);
     }
+
+
 }

@@ -1,5 +1,6 @@
 package com.pieceofquality;
 
+import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.ElementsCollection;
 import org.junit.Test;
 
@@ -20,8 +21,8 @@ import static com.codeborne.selenide.Selenide.*;
   9 clear completed
 
  */
-public class ToDoMVCTest{
 
+public class ToDoMVCTest{
     @Test
     public void testTasksFlow(){
         open("https://todomvc4tasj.herokuapp.com/");
