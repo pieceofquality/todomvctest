@@ -1,8 +1,10 @@
 package com.pieceofquality1;
 
+import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import org.junit.Test;
+import org.openqa.selenium.By;
 
 import static com.codeborne.selenide.CollectionCondition.empty;
 import static com.codeborne.selenide.CollectionCondition.exactTexts;
@@ -95,15 +97,15 @@ public class ToDoMVCTest {
 
 
     private void filterAll() {
-        $("[href='#/']").click();
+        $(By.linkText("All")).click();
     }
 
     private void filterActive() {
-        $("[href='#/active']").click();
+        $(By.linkText("Active")).click();
     }
 
     private void filterCompleted() {
-        $("[href='#/completed']").click();
+        $(By.linkText("Completed")).click();
     }
 
     private void assertTasksEmpty() {
