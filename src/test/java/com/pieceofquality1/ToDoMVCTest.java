@@ -17,7 +17,6 @@ public class ToDoMVCTest {
 
         open("https://todomvc4tasj.herokuapp.com/");
 
-        //editing
         add("1");
         edit("1", "1 edited");
         assertTasksAre("1 edited");
@@ -25,18 +24,17 @@ public class ToDoMVCTest {
         //complete
         toggle("1 edited");
         assertVisible("1 edited");
+        filterCompleted();
 
         //reopen
-        filterCompleted();
         toggle("1 edited");
         assertNoVisible();
 
 
-       //cancel edit
         filterActive();
         add("2");
         cancelEdit("2", "2 edited");
-
+        assertTasksAre("2");
 
         //delete
         delete("1 edited");
@@ -44,6 +42,8 @@ public class ToDoMVCTest {
 
         //complete all
         toggleAll();
+        assertNoVisible();
+        filterAll();
         clearCompleted();
         assertTasksEmpty();
     }
