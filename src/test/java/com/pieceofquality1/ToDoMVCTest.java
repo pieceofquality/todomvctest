@@ -1,6 +1,5 @@
 package com.pieceofquality1;
 
-import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import org.junit.Test;
@@ -8,9 +7,7 @@ import org.openqa.selenium.By;
 
 import static com.codeborne.selenide.CollectionCondition.empty;
 import static com.codeborne.selenide.CollectionCondition.exactTexts;
-import static com.codeborne.selenide.Condition.cssClass;
-import static com.codeborne.selenide.Condition.exactText;
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 
 public class ToDoMVCTest {
@@ -27,17 +24,18 @@ public class ToDoMVCTest {
         //complete
         toggle("1 edited");
         assertVisible("1 edited");
-        filterCompleted();
 
         //reopen
+        filterCompleted();
         toggle("1 edited");
         assertNoVisible();
 
-
+//        cancel
         filterActive();
+        assertTasksAre("1 edited");
         add("2");
         edit("2", "2 edited").pressEscape();
-        assertTasksAre("2");
+        assertTasksAre("1 edited", "2");
 
         //delete
         delete("1 edited");
@@ -56,15 +54,6 @@ public class ToDoMVCTest {
        return tasks.find(cssClass("editing")).$(".edit").setValue(newTaskText);
 
     }
-
-    //    private void edit(String taskOldText, String taskNewText) {
-//        tasks.find(exactText(taskOldText)).doubleClick();
-//        tasks.find(cssClass("editing")).$(".edit").setValue(taskNewText).pressEnter();
-//    }
-//    private void cancelEdit(String taskOldText,String taskNewText) {
-//        tasks.find(exactText(taskOldText)).doubleClick();
-//        tasks.find(cssClass("editing")).$(".edit").setValue(taskNewText).pressEscape();
-//    }
 
     ElementsCollection tasks = $$("#todo-list li");
 
