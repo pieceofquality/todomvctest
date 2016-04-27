@@ -24,15 +24,18 @@ public class ToDoMVCTest {
         toggle("1 edited");
         assertVisibleTasks("1 edited");
 
-        //reopen
         filterCompleted();
+
+        //reopen
         toggle("1 edited");
         assertNoVisibleTasks();
 
-        //cancel
         filterActive();
         assertTasks("1 edited");
         add("2");
+        assertTasks("1 edited", "2");
+
+        //cancel
         startEdit("2", "2 edited").pressEscape();
         assertTasks("1 edited", "2");
 
@@ -46,7 +49,8 @@ public class ToDoMVCTest {
 
 
         filterAll();
-        assertItemsLeft(1);
+        assertTasks("2");
+        assertItemsLeft(0);
         clearCompleted();
         assertNoTasks();
     }
@@ -61,7 +65,7 @@ public class ToDoMVCTest {
 
     private SelenideElement startEdit(String oldTaskText, String newTaskText) {
         tasks.find(exactText(oldTaskText)).doubleClick();
-       return tasks.find(cssClass("editing")).$(".edit").setValue(newTaskText);
+        return tasks.find(cssClass("editing")).$(".edit").setValue(newTaskText);
 
     }
 
