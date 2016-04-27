@@ -18,52 +18,59 @@ public class ToDoMVCTest {
         open("https://todomvc4tasj.herokuapp.com/");
 
         add("1");
-        edit("1", "1 edited").pressEnter();
-        assertTasksAre("1 edited");
+        startEdit("1", "1 edited").pressEnter();
 
         //complete
         toggle("1 edited");
-        assertVisible("1 edited");
+        assertVisibleTasks("1 edited");
 
         //reopen
         filterCompleted();
         toggle("1 edited");
-        assertNoVisible();
+        assertNoVisibleTasks();
 
-//        cancel
+        //cancel
         filterActive();
-        assertTasksAre("1 edited");
+        assertTasks("1 edited");
         add("2");
-        edit("2", "2 edited").pressEscape();
-        assertTasksAre("1 edited", "2");
+        startEdit("2", "2 edited").pressEscape();
+        assertTasks("1 edited", "2");
 
         //delete
         delete("1 edited");
-        assertTasksAre("2");
+        assertTasks("2");
 
         //complete all
         toggleAll();
-        assertNoVisible();
+        assertNoVisibleTasks();
+
+
         filterAll();
+        assertTasks("2");
         clearCompleted();
-        assertTasksEmpty();
+        assertNoTasks();
     }
 
-    private SelenideElement edit (String oldTaskText, String newTaskText) {
+    ElementsCollection tasks = $$("#todo-list li");
+
+    private void add(String... taskTexts) {
+        for (String text : taskTexts) {
+            $("#new-todo").setValue(text).pressEnter();
+        }
+    }
+
+    private SelenideElement startEdit(String oldTaskText, String newTaskText) {
         tasks.find(exactText(oldTaskText)).doubleClick();
        return tasks.find(cssClass("editing")).$(".edit").setValue(newTaskText);
 
     }
 
-    ElementsCollection tasks = $$("#todo-list li");
-
-
-    private void toggle(String text) {
-        tasks.find(exactText(text)).$(".toggle").click();
+    private void delete(String taskTexts) {
+        tasks.find(exactText(taskTexts)).hover().$(".destroy").click();
     }
 
-    private void assertTasksAre(String... taskTexts) {
-        tasks.shouldHave(exactTexts(taskTexts));
+    private void toggle(String taskTexts) {
+        tasks.find(exactText(taskTexts)).$(".toggle").click();
     }
 
     private void toggleAll() {
@@ -73,17 +80,6 @@ public class ToDoMVCTest {
     private void clearCompleted() {
         $("#clear-completed").click();
     }
-
-    private void add(String... taskTexts) {
-        for (String text : taskTexts) {
-            $("#new-todo").setValue(text).pressEnter();
-        }
-    }
-
-    private void delete(String taskText) {
-        tasks.find(exactText(taskText)).hover().$(".destroy").click();
-    }
-
 
     private void filterAll() {
         $(By.linkText("All")).click();
@@ -97,16 +93,19 @@ public class ToDoMVCTest {
         $(By.linkText("Completed")).click();
     }
 
-    private void assertTasksEmpty() {
+    private void assertTasks(String... taskTexts) {
+        tasks.shouldHave(exactTexts(taskTexts));
+    }
+
+    private void assertNoTasks() {
         tasks.shouldBe(empty);
     }
 
-    private void assertVisible(String... tasksTexts) {
+    private void assertVisibleTasks(String... tasksTexts) {
         tasks.filter(visible).shouldHave(exactTexts(tasksTexts));
     }
-    private void assertNoVisible() {
+
+    private void assertNoVisibleTasks() {
         tasks.filter(visible).shouldBe(empty);
     }
-
-
 }
