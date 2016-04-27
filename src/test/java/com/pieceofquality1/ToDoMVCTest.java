@@ -46,7 +46,7 @@ public class ToDoMVCTest {
 
 
         filterAll();
-        assertTasks("2");
+        assertItemsLeft(1);
         clearCompleted();
         assertNoTasks();
     }
@@ -107,5 +107,9 @@ public class ToDoMVCTest {
 
     private void assertNoVisibleTasks() {
         tasks.filter(visible).shouldBe(empty);
+    }
+
+    private void assertItemsLeft(int count) {
+        $("#todo-count>strong").shouldHave(exactText(Integer.toString(count)));
     }
 }
