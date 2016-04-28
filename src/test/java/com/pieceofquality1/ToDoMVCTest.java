@@ -18,39 +18,39 @@ public class ToDoMVCTest {
         open("https://todomvc4tasj.herokuapp.com/");
 
         add("1");
+        assertItemsLeft(1);
+
         startEdit("1", "1 edited").pressEnter();
 
-        //complete
         toggle("1 edited");
-        assertVisibleTasks("1 edited");
+        assertTasks("1 edited");
 
         filterCompleted();
 
         //reopen
-        toggle("1 edited");
+        toggleAll();
         assertNoVisibleTasks();
 
         filterActive();
-        assertTasks("1 edited");
+
         add("2");
+        assertVisibleTasks("1 edited", "2");
+
+        assertItemsLeft(2);
         assertTasks("1 edited", "2");
 
         //cancel
         startEdit("2", "2 edited").pressEscape();
         assertTasks("1 edited", "2");
 
-        //delete
         delete("1 edited");
         assertTasks("2");
 
-        //complete all
-        toggleAll();
-        assertNoVisibleTasks();
-
-
         filterAll();
         assertTasks("2");
-        assertItemsLeft(0);
+        toggle("2");
+
+        //complete all
         clearCompleted();
         assertNoTasks();
     }
@@ -66,7 +66,6 @@ public class ToDoMVCTest {
     private SelenideElement startEdit(String oldTaskText, String newTaskText) {
         tasks.find(exactText(oldTaskText)).doubleClick();
         return tasks.find(cssClass("editing")).$(".edit").setValue(newTaskText);
-
     }
 
     private void delete(String taskTexts) {
@@ -83,6 +82,7 @@ public class ToDoMVCTest {
 
     private void clearCompleted() {
         $("#clear-completed").click();
+        $("#clear-completed").shouldNotBe(visible);
     }
 
     private void filterAll() {
