@@ -25,19 +25,16 @@ public class ToDoMVCTest {
         toggle("1 edited");
         assertTasks("1 edited");
 
-        filterCompleted();
-
         //reopen
-        toggleAll();
+        toggle("1 edited");
+        filterCompleted();
         assertNoVisibleTasks();
 
         filterActive();
 
         add("2");
         assertVisibleTasks("1 edited", "2");
-
         assertItemsLeft(2);
-        assertTasks("1 edited", "2");
 
         //cancel
         startEdit("2", "2 edited").pressEscape();
@@ -47,10 +44,9 @@ public class ToDoMVCTest {
         assertTasks("2");
 
         filterAll();
-        assertTasks("2");
-        toggle("2");
 
-        //complete all
+        //complete&clear all
+        toggleAll();
         clearCompleted();
         assertNoTasks();
     }
