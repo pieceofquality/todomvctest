@@ -18,28 +18,28 @@ public class ToDoMVCTest {
         open("https://todomvc4tasj.herokuapp.com/");
 
         add("1");
-        assertTasks("1");
         toggle("1");
-        assertVisibleTasks("1");
+        assertTasks("1");
 
         filterCompleted();
+        assertVisibleTasks("1");
         startEdit("1", "1 edited cancelled").pressEscape();
-        assertTasks("1");
         //reopen
         toggle("1");
         assertNoVisibleTasks();
         assertItemsLeft(1);
 
         filterActive();
+        assertVisibleTasks("1");
         startEdit("1", "1 edited").pressEnter();
+        assertVisibleTasks("1 edited");
         add("2");
         assertVisibleTasks("1 edited", "2");
-        assertTasks("1 edited", "2");
-        startEdit("2", "2 edited").pressTab();
-        delete("2 edited");
-        assertTasks("1 edited");
+        delete("2");
+        assertVisibleTasks("1 edited");
 
         filterAll();
+        assertTasks("1 edited");
         toggleAll();
         clearCompleted();
         assertNoTasks();
@@ -58,12 +58,12 @@ public class ToDoMVCTest {
         return tasks.find(cssClass("editing")).$(".edit").setValue(newTaskText);
     }
 
-    private void delete(String taskTexts) {
-        tasks.find(exactText(taskTexts)).hover().$(".destroy").click();
+    private void delete(String taskText) {
+        tasks.find(exactText(taskText)).hover().$(".destroy").click();
     }
 
-    private void toggle(String taskTexts) {
-        tasks.find(exactText(taskTexts)).$(".toggle").click();
+    private void toggle(String taskText) {
+        tasks.find(exactText(taskText)).$(".toggle").click();
     }
 
     private void toggleAll() {
