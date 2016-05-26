@@ -1,7 +1,9 @@
-package com.pieceofquality1;
+package com.pieceofquality2;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 
@@ -11,6 +13,16 @@ import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 
 public class ToDoMVCTest {
+
+    @Before
+    public void openSite(){
+        open("https://todomvc4tasj.herokuapp.com");
+    }
+
+    @After
+    public void clearData(){
+        executeJavaScript("localStorage.clear()");
+    }
 
     @Test
     public void testTasksFlow() {
@@ -25,17 +37,8 @@ public class ToDoMVCTest {
         filterActive();
         assertNoVisibleTasks();
 
-        add("2");
-
-        startEdit("2", "2 edited").pressEnter();
-
-        delete("2 edited");
-        assertNoVisibleTasks();
-
         filterCompleted();
         assertVisibleTasks("1");
-
-        startEdit("1", "1 edited cancelled").pressEscape();
 
         //reopen
         toggle("1");
@@ -49,6 +52,29 @@ public class ToDoMVCTest {
 
         clearCompleted();
         assertNoTasks();
+    }
+
+    @Test
+    public void testEditAtActive(){
+//      given - task added
+        add("1");
+        filterActive();
+
+        startEdit("1", "1 edited").pressEnter();
+        assertVisibleTasks("1 edited");
+        assertItemsLeft(1);
+    }
+
+    @Test
+    public void testCancelEditAtCompleted(){
+//      given - task added and completed
+        add("1");
+        toggle("1");
+        filterCompleted();
+
+        startEdit("1", "1 cancelled").pressEscape();
+        assertVisibleTasks("1");
+        assertItemsLeft(0);
     }
 
     ElementsCollection tasks = $$("#todo-list li");
