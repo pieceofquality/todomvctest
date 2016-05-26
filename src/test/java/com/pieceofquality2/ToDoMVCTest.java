@@ -24,6 +24,17 @@ public class ToDoMVCTest {
         executeJavaScript("localStorage.clear()");
     }
 
+//    @After
+//    public void tearDown() throws IOException {
+//        screenshot();
+//    }
+//
+//    @Attachment(type = "image/png")
+//    public byte[] screenshot() throws IOException {
+//        File screenshot = Screenshots.getLastScreenshot();
+//        return Files.toByteArray(screenshot);
+//    }
+
     @Test
     public void testTasksFlow() {
 
