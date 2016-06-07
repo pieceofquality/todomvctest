@@ -1,4 +1,4 @@
-package com.pieceofquality3;
+package com.pieceofquality4;
 
 import com.codeborne.selenide.Screenshots;
 import com.google.common.io.Files;

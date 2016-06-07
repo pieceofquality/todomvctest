@@ -1,47 +1,18 @@
-package com.pieceofquality2;
+package com.pieceofquality4;
 
 import com.codeborne.selenide.ElementsCollection;
-import com.codeborne.selenide.Screenshots;
 import com.codeborne.selenide.SelenideElement;
-import com.google.common.io.Files;
-import org.junit.After;
-import org.junit.Before;
+import com.pieceofquality3.AtTodoMVCPageWithClearedDataAfterEachTest;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import ru.yandex.qatools.allure.annotations.Attachment;
-import ru.yandex.qatools.allure.annotations.Step;
-
-import java.io.File;
-import java.io.IOException;
 
 import static com.codeborne.selenide.CollectionCondition.empty;
 import static com.codeborne.selenide.CollectionCondition.exactTexts;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.WebDriverRunner.url;
 
-public class ToDoMVCTest {
-
-    @After
-    public void tearDown() throws IOException {
-        screenshot();
-    }
-    @Attachment
-    public byte[] screenshot() throws IOException {
-        File screenshot = Screenshots.takeScreenShotAsFile();
-        return Files.toByteArray(screenshot);
-    }
-
-    @Before
-    public void openSite(){
-        open("https://todomvc4tasj.herokuapp.com");
-    }
-
-    @After
-    public void clearData(){
-        executeJavaScript("localStorage.clear()");
-    }
-
-
+public class ToDoMVCTest extends AtTodoMVCPageWithClearedDataAfterEachTest {
 
     @Test
     public void testTasksFlow() {
@@ -74,23 +45,16 @@ public class ToDoMVCTest {
     }
 
     @Test
-    public void testEditAtActive(){
-//      given - task added
-        add("1");
-        filterActive();
-
+    public void testEditAtActive() {
+        givenAtActive(TaskType.ACTIVE, "1");
         startEdit("1", "1 edited").pressEnter();
         assertVisibleTasks("1 edited");
         assertItemsLeft(1);
     }
 
     @Test
-    public void testCancelEditAtCompleted(){
-//      given - task added and completed
-        add("1");
-        toggle("1");
-        filterCompleted();
-
+    public void testCancelEditAtCompleted() {
+        givenAtCompleted(TaskType.COMPLETED, "1");
         startEdit("1", "1 cancelled").pressEscape();
         assertVisibleTasks("1");
         assertItemsLeft(0);
@@ -98,77 +62,151 @@ public class ToDoMVCTest {
 
     ElementsCollection tasks = $$("#todo-list li");
 
-    @Step
     private void add(String... taskTexts) {
         for (String text : taskTexts) {
             $("#new-todo").setValue(text).pressEnter();
         }
     }
 
-    @Step
     private SelenideElement startEdit(String oldTaskText, String newTaskText) {
         tasks.find(exactText(oldTaskText)).doubleClick();
         return tasks.find(cssClass("editing")).$(".edit").setValue(newTaskText);
     }
 
-    @Step
     private void delete(String taskText) {
         tasks.find(exactText(taskText)).hover().$(".destroy").click();
     }
 
-    @Step
     private void toggle(String taskText) {
         tasks.find(exactText(taskText)).$(".toggle").click();
     }
 
-    @Step
     private void toggleAll() {
         $("#toggle-all").click();
     }
 
-    @Step
     private void clearCompleted() {
         $("#clear-completed").click();
         $("#clear-completed").shouldNotBe(visible);
     }
 
-    @Step
     private void filterAll() {
         $(By.linkText("All")).click();
     }
 
-    @Step
     private void filterActive() {
         $(By.linkText("Active")).click();
     }
 
-    @Step
     private void filterCompleted() {
         $(By.linkText("Completed")).click();
     }
 
-    @Step
     private void assertTasks(String... taskTexts) {
         tasks.shouldHave(exactTexts(taskTexts));
     }
 
-    @Step
     private void assertNoTasks() {
         tasks.shouldBe(empty);
     }
 
-    @Step
     private void assertVisibleTasks(String... tasksTexts) {
         tasks.filter(visible).shouldHave(exactTexts(tasksTexts));
     }
 
-    @Step
     private void assertNoVisibleTasks() {
         tasks.filter(visible).shouldBe(empty);
     }
 
-    @Step
     private void assertItemsLeft(int count) {
         $("#todo-count>strong").shouldHave(exactText(Integer.toString(count)));
+    }
+
+    // pre-conditions
+
+    private void isPageOpened(){
+        if (! url().equals("https://todomvc4tasj.herokuapp.com/")) {
+            open("https://todomvc4tasj.herokuapp.com/");
+        }
+    }
+    public enum TaskType {
+        ACTIVE("false"),
+        COMPLETED("true");
+
+        private final String status;
+
+        TaskType(String status) {
+            this.status = status;
+        }
+
+        public String getType() {
+            return status;
+        }
+    }
+
+    public class Task {
+        String taskName;
+        TaskType taskType;
+
+        public Task(String taskName, TaskType taskType) {
+            this.taskName = taskName;
+            this.taskType = taskType;
+        }
+
+        public String toString() {
+            return "{\\\"completed\\\":" + taskType+ ", \\\"title\\\":\\\"" + taskName + "\\\"}, ";
+        }
+    }
+
+    public Task aTask(String taskText, TaskType taskType) {
+        return new Task(taskText, taskType);
+    }
+
+    public void givenAtAll(Task... tasks) {
+        given(tasks);
+    }
+
+    public void givenAtActive(Task... tasks) {
+        given(tasks);
+        filterActive();
+    }
+
+    public void givenAtCompleted(Task... tasks) {
+        given(tasks);
+        filterCompleted();
+    }
+
+    public void givenAtAll(TaskType taskType, String... taskTexts) {
+        Task[] tasks = new Task[taskTexts.length];
+        for (int i = 0; i < tasks.length; i++) {
+            tasks[i] = new Task(taskTexts[i], taskType);
+        }
+        given(tasks);
+    }
+
+    public void givenAtActive(TaskType taskType, String... taskTexts) {
+        givenAtAll(taskType, taskTexts);
+        filterActive();
+    }
+
+    public void givenAtCompleted(TaskType taskType, String... taskTexts) {
+        givenAtAll(taskType, taskTexts);
+        filterCompleted();
+    }
+
+
+    public void given(Task... tasks) {
+
+        isPageOpened();
+        String elements = "";
+        for (Task task : tasks) {
+            elements += "{\"completed\":" + task.taskType.getType() + ", \"title\":\"" + task.taskName + "\"},";
+        }
+        if (tasks.length > 0) {
+            elements = elements.substring(0, (elements.length() - 1));
+        }
+        elements += "]');";
+        executeJavaScript(elements);
+        refresh();
     }
 }
