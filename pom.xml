@@ -15,14 +15,13 @@
         <aspectj.version>1.8.9</aspectj.version>
         <surefire.version>2.19.1</surefire.version>
         <junit.version>4.12</junit.version>
-        <selenide.version>3.4</selenide.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>com.codeborne</groupId>
             <artifactId>selenide</artifactId>
-            <version>${selenide.version}</version>
+            <version>3.5.1</version>
         </dependency>
 
         <dependency>

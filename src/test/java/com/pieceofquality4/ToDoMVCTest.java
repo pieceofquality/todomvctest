@@ -1,5 +1,6 @@
 package com.pieceofquality4;
 
+import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import com.pieceofquality3.AtTodoMVCPageWithClearedDataAfterEachTest;
@@ -15,10 +16,11 @@ import static com.codeborne.selenide.WebDriverRunner.url;
 public class ToDoMVCTest extends AtTodoMVCPageWithClearedDataAfterEachTest {
 
     @Test
+
     public void testTasksFlow() {
+        Configuration.pageLoadStrategy = "normal";
 
         open("https://todomvc4tasj.herokuapp.com/");
-
         add("1");
 
         toggle("1");
