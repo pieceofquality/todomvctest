@@ -3,7 +3,6 @@ package com.pieceofquality4;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-import com.pieceofquality3.AtTodoMVCPageWithClearedDataAfterEachTest;
 import org.junit.Test;
 import org.openqa.selenium.By;
 
@@ -13,7 +12,7 @@ import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.WebDriverRunner.url;
 
-public class ToDoMVCTest extends AtTodoMVCPageWithClearedDataAfterEachTest {
+public class ToDoMVCTest extends com.pieceofquality4.BaseTest {
 
     @Test
 
