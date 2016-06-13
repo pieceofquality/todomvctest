@@ -1,6 +1,5 @@
 package com.pieceofquality4;
 
-import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import org.junit.Test;
@@ -17,9 +16,7 @@ public class ToDoMVCTest extends com.pieceofquality4.BaseTest {
     @Test
 
     public void testTasksFlow() {
-        Configuration.pageLoadStrategy = "normal";
-
-        open("https://todomvc4tasj.herokuapp.com/");
+        ensurePageOpened();
         add("1");
 
         toggle("1");
@@ -44,6 +41,46 @@ public class ToDoMVCTest extends com.pieceofquality4.BaseTest {
         clearCompleted();
         assertNoTasks();
     }
+    @Test
+    public void testAddAll(){
+        givenAtAll(TaskType.ACTIVE, "1");
+        add("2");
+        assertTasks("1", "2");
+    }
+
+    @Test
+    public void testCompleteAll(){
+        givenAtAll(TaskType.ACTIVE, "1");
+        toggle("1");
+        assertTasks("1");
+    }
+
+    @Test
+    public void testCompleteAllTasksAll(){
+        givenAtAll(TaskType.ACTIVE, "1", "2");
+        toggleAll();
+        assertTasks("1", "2");
+    }
+
+    @Test
+    public void testClearCompletedAll(){
+        givenAtAll(TaskType.COMPLETED, "1", "2");
+        clearCompleted();
+        assertNoTasks();
+    }
+
+    @Test
+    public void testAddActive(){
+        givenAtActive(TaskType.ACTIVE, "1");
+        add("2");
+        assertVisibleTasks("1", "2");
+    }
+    @Test
+    public void testDeleteActive(){
+        givenAtActive(TaskType.ACTIVE, "1");
+        delete("1");
+        assertNoVisibleTasks();
+    }
 
     @Test
     public void testEditAtActive() {
@@ -53,6 +90,12 @@ public class ToDoMVCTest extends com.pieceofquality4.BaseTest {
         assertItemsLeft(1);
     }
 
+    @Test
+    public void testReopenActive(){
+        givenAtCompleted(TaskType.COMPLETED, "1");
+        toggle("1");
+        assertNoVisibleTasks();
+    }
     @Test
     public void testCancelEditAtCompleted() {
         givenAtCompleted(TaskType.COMPLETED, "1");
@@ -125,7 +168,7 @@ public class ToDoMVCTest extends com.pieceofquality4.BaseTest {
 
     // pre-conditions
 
-    private void isPageOpened(){
+    private void ensurePageOpened(){
         if (! url().equals("https://todomvc4tasj.herokuapp.com/")) {
             open("https://todomvc4tasj.herokuapp.com/");
         }
@@ -146,21 +189,13 @@ public class ToDoMVCTest extends com.pieceofquality4.BaseTest {
     }
 
     public class Task {
-        String taskName;
+        String taskText;
         TaskType taskType;
 
-        public Task(String taskName, TaskType taskType) {
-            this.taskName = taskName;
+        public Task(String taskText, TaskType taskType) {
+            this.taskText = taskText;
             this.taskType = taskType;
         }
-
-        public String toString() {
-            return "{\\\"completed\\\":" + taskType+ ", \\\"title\\\":\\\"" + taskName + "\\\"}, ";
-        }
-    }
-
-    public Task aTask(String taskText, TaskType taskType) {
-        return new Task(taskText, taskType);
     }
 
     public void givenAtAll(Task... tasks) {
@@ -194,19 +229,19 @@ public class ToDoMVCTest extends com.pieceofquality4.BaseTest {
         givenAtAll(taskType, taskTexts);
         filterCompleted();
     }
-
-
+    
     public void given(Task... tasks) {
 
-        isPageOpened();
-        String elements = "";
+        ensurePageOpened();
+        String elements = "localStorage.setItem('todos-troopjs', '[";
         for (Task task : tasks) {
-            elements += "{\"completed\":" + task.taskType.getType() + ", \"title\":\"" + task.taskName + "\"},";
+            elements += "{\"completed\":" + task.taskType.getType() + ", \"title\":\"" + task.taskText + "\"},";
         }
         if (tasks.length > 0) {
             elements = elements.substring(0, (elements.length() - 1));
         }
         elements += "]');";
+        System.out.println(elements);
         executeJavaScript(elements);
         refresh();
     }
