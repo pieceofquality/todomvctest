@@ -45,7 +45,7 @@ public class ToDoMVCTest extends BaseTest {
     }
     @Test
     public void testAddAll(){
-
+        given();
         add("1");
         assertTasks("1");
         assertItemsLeft(1);
@@ -133,7 +133,7 @@ public class ToDoMVCTest extends BaseTest {
         givenAtAll(ACTIVE, "1");
 
         startEdit("1", "").pressEnter();
-        assertTasks("1");
+        assertNoTasks();
     }
 
     @Test
@@ -147,7 +147,7 @@ public class ToDoMVCTest extends BaseTest {
 
     @Test
     public void testEditClickOutsideAtCompleted() {
-        givenAtActive(COMPLETED, "1");
+        givenAtCompleted(COMPLETED, "1");
 
         startEdit("1", "1 edited");
         $("#new-todo").click();
