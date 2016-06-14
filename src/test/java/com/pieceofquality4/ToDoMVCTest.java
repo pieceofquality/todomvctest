@@ -10,14 +10,16 @@ import static com.codeborne.selenide.CollectionCondition.exactTexts;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.WebDriverRunner.url;
+import static com.pieceofquality4.ToDoMVCTest.TaskType.ACTIVE;
+import static com.pieceofquality4.ToDoMVCTest.TaskType.COMPLETED;
 
-public class ToDoMVCTest extends com.pieceofquality4.BaseTest {
+public class ToDoMVCTest extends BaseTest {
 
     @Test
 
     public void testTasksFlow() {
-        ensurePageOpened();
-        add("1");
+
+        givenAtAll(ACTIVE, "1");
 
         toggle("1");
         assertTasks("1");
@@ -43,65 +45,141 @@ public class ToDoMVCTest extends com.pieceofquality4.BaseTest {
     }
     @Test
     public void testAddAll(){
-        givenAtAll(TaskType.ACTIVE, "1");
-        add("2");
-        assertTasks("1", "2");
+
+        add("1");
+        assertTasks("1");
+        assertItemsLeft(1);
     }
 
     @Test
-    public void testCompleteAll(){
-        givenAtAll(TaskType.ACTIVE, "1");
+    public void testCompleteAtAll(){
+        givenAtAll(ACTIVE, "1");
+
         toggle("1");
         assertTasks("1");
+        assertItemsLeft(0);
     }
 
     @Test
-    public void testCompleteAllTasksAll(){
-        givenAtAll(TaskType.ACTIVE, "1", "2");
+    public void testCompleteAllAtAll(){
+        givenAtAll(ACTIVE, "1", "2");
+
         toggleAll();
         assertTasks("1", "2");
     }
 
     @Test
-    public void testClearCompletedAll(){
-        givenAtAll(TaskType.COMPLETED, "1", "2");
+    public void testClearCompletedAtAll(){
+        givenAtAll(COMPLETED, "1", "2");
+
         clearCompleted();
         assertNoTasks();
     }
 
     @Test
-    public void testAddActive(){
-        givenAtActive(TaskType.ACTIVE, "1");
+    public void testAddAtActive(){
+        givenAtActive(ACTIVE, "1");
+
         add("2");
         assertVisibleTasks("1", "2");
+        assertItemsLeft(2);
     }
     @Test
-    public void testDeleteActive(){
-        givenAtActive(TaskType.ACTIVE, "1");
+    public void testDeleteAtActive(){
+        givenAtActive(ACTIVE, "1");
+
         delete("1");
         assertNoVisibleTasks();
     }
 
     @Test
     public void testEditAtActive() {
-        givenAtActive(TaskType.ACTIVE, "1");
+        givenAtActive(ACTIVE, "1");
+
         startEdit("1", "1 edited").pressEnter();
         assertVisibleTasks("1 edited");
         assertItemsLeft(1);
     }
 
     @Test
-    public void testReopenActive(){
-        givenAtCompleted(TaskType.COMPLETED, "1");
+    public void testReopenAtCompleted(){
+        givenAtCompleted(COMPLETED, "1");
+
         toggle("1");
         assertNoVisibleTasks();
+        assertItemsLeft(1);
     }
+
+    @Test
+    public void testReopenAllAtCompleted(){
+        givenAtCompleted(COMPLETED, "1", "2");
+
+        toggleAll();
+        assertNoVisibleTasks();
+        assertItemsLeft(2);
+    }
+
     @Test
     public void testCancelEditAtCompleted() {
-        givenAtCompleted(TaskType.COMPLETED, "1");
+        givenAtCompleted(COMPLETED, "1");
+
         startEdit("1", "1 cancelled").pressEscape();
         assertVisibleTasks("1");
         assertItemsLeft(0);
+    }
+
+    @Test
+    public void testDeleteByEmptyAtAll() {
+        givenAtAll(ACTIVE, "1");
+
+        startEdit("1", "").pressEnter();
+        assertTasks("1");
+    }
+
+    @Test
+    public void testEditTabAtActive() {
+        givenAtActive(ACTIVE, "1");
+
+        startEdit("1", "1 edited").pressTab();
+        assertTasks("1 edited");
+        assertItemsLeft(1);
+    }
+
+    @Test
+    public void testEditClickOutsideAtCompleted() {
+        givenAtActive(COMPLETED, "1");
+
+        startEdit("1", "1 edited");
+        $("#new-todo").click();
+        assertTasks("1 edited");
+        assertItemsLeft(0);
+    }
+
+    @Test
+    public void testFilterActiveToAll(){
+        givenAtActive(aTask("1", ACTIVE), aTask("2", COMPLETED));
+
+        filterAll();
+        assertTasks("1", "2");
+        assertItemsLeft(1);
+    }
+
+    @Test
+    public void testFilterFromCompletedToActive() {
+        givenAtCompleted(aTask("1", ACTIVE), aTask("2", COMPLETED));
+
+        filterActive();
+        assertVisibleTasks("1");
+        assertItemsLeft(1);
+    }
+
+    @Test
+    public void testFilterFromAllToCompleted() {
+        givenAtAll(aTask("1", ACTIVE), aTask("2", COMPLETED));
+
+        filterCompleted();
+        assertVisibleTasks("2");
+        assertItemsLeft(1);
     }
 
     ElementsCollection tasks = $$("#todo-list li");
@@ -173,7 +251,7 @@ public class ToDoMVCTest extends com.pieceofquality4.BaseTest {
             open("https://todomvc4tasj.herokuapp.com/");
         }
     }
-    public enum TaskType {
+    public static enum TaskType {
         ACTIVE("false"),
         COMPLETED("true");
 
@@ -241,8 +319,11 @@ public class ToDoMVCTest extends com.pieceofquality4.BaseTest {
             elements = elements.substring(0, (elements.length() - 1));
         }
         elements += "]');";
-        System.out.println(elements);
         executeJavaScript(elements);
         refresh();
+    }
+
+    public Task aTask(String taskText, TaskType taskType) {
+        return new Task(taskText, taskType);
     }
 }
