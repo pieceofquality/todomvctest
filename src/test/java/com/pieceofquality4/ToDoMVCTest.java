@@ -44,10 +44,28 @@ public class ToDoMVCTest extends BaseTest {
         assertNoTasks();
     }
     @Test
-    public void testAddAll(){
+    public void testAddAtAll(){
         given();
         add("1");
         assertTasks("1");
+        assertItemsLeft(1);
+    }
+
+    @Test
+    public void testDeleteAtAll(){
+        givenAtAll(aTask("1", ACTIVE), aTask("2", COMPLETED));
+
+        delete("1");
+        assertTasks("2");
+        assertItemsLeft(0);
+    }
+
+    @Test
+    public void testEditAtAll(){
+        givenAtAll(aTask("1", ACTIVE), aTask("2", COMPLETED));
+
+        startEdit("2", "2 edited").pressEnter();
+        assertVisibleTasks("1", "2 edited");
         assertItemsLeft(1);
     }
 
@@ -66,14 +84,25 @@ public class ToDoMVCTest extends BaseTest {
 
         toggleAll();
         assertTasks("1", "2");
+        assertItemsLeft(0);
     }
 
     @Test
     public void testClearCompletedAtAll(){
-        givenAtAll(COMPLETED, "1", "2");
+        givenAtAll(aTask("1", ACTIVE), aTask("2", COMPLETED));
 
         clearCompleted();
-        assertNoTasks();
+        assertTasks("1");
+        assertItemsLeft(1);
+    }
+
+    @Test
+    public void testReopenAtAll(){
+        givenAtAll(aTask("1", ACTIVE), aTask("2", COMPLETED));
+
+        toggle("2");
+        assertTasks("1", "2");
+        assertItemsLeft(2);
     }
 
     @Test
@@ -98,6 +127,35 @@ public class ToDoMVCTest extends BaseTest {
 
         startEdit("1", "1 edited").pressEnter();
         assertVisibleTasks("1 edited");
+        assertItemsLeft(1);
+    }
+
+    @Test
+    public void testCompleteAtActive(){
+        givenAtActive(aTask("1", ACTIVE), aTask("2", ACTIVE));
+
+        toggle("1");
+        assertVisibleTasks("2");
+        assertItemsLeft(1);
+    }
+
+    @Test
+    public void testEditAtCompleted() {
+
+        givenAtCompleted(aTask("1", ACTIVE), aTask("2", COMPLETED));
+
+        startEdit("2", "2 edited").pressEnter();
+        assertVisibleTasks("2 edited");
+        assertItemsLeft(1);
+    }
+
+    @Test
+    public void testClearCompletedAllAtCompleted() {
+        givenAtCompleted(aTask("1", COMPLETED), aTask("2", COMPLETED));
+
+        toggle("1");
+        clearCompleted();
+        assertNoVisibleTasks();
         assertItemsLeft(1);
     }
 
@@ -137,7 +195,7 @@ public class ToDoMVCTest extends BaseTest {
     }
 
     @Test
-    public void testEditTabAtActive() {
+    public void testEditByPressTabAtActive() {
         givenAtActive(ACTIVE, "1");
 
         startEdit("1", "1 edited").pressTab();
@@ -146,7 +204,7 @@ public class ToDoMVCTest extends BaseTest {
     }
 
     @Test
-    public void testEditClickOutsideAtCompleted() {
+    public void testEditByClickOutsideAtCompleted() {
         givenAtCompleted(COMPLETED, "1");
 
         startEdit("1", "1 edited");
@@ -156,30 +214,30 @@ public class ToDoMVCTest extends BaseTest {
     }
 
     @Test
-    public void testFilterActiveToAll(){
-        givenAtActive(aTask("1", ACTIVE), aTask("2", COMPLETED));
+    public void testFilterFromActiveToAll(){
+        givenAtActive(aTask("1", ACTIVE), aTask("2", COMPLETED), aTask("3", ACTIVE), aTask("4", ACTIVE), aTask("5", COMPLETED));
 
         filterAll();
-        assertTasks("1", "2");
-        assertItemsLeft(1);
+        assertTasks("1", "2", "3", "4", "5");
+        assertItemsLeft(3);
     }
 
     @Test
     public void testFilterFromCompletedToActive() {
-        givenAtCompleted(aTask("1", ACTIVE), aTask("2", COMPLETED));
+        givenAtCompleted(aTask("1", ACTIVE), aTask("2", COMPLETED), aTask("3", ACTIVE));
 
         filterActive();
-        assertVisibleTasks("1");
-        assertItemsLeft(1);
+        assertVisibleTasks("1", "3");
+        assertItemsLeft(2);
     }
 
     @Test
     public void testFilterFromAllToCompleted() {
-        givenAtAll(aTask("1", ACTIVE), aTask("2", COMPLETED));
+        givenAtAll(aTask("1", ACTIVE), aTask("2", COMPLETED), aTask("3", ACTIVE));
 
         filterCompleted();
         assertVisibleTasks("2");
-        assertItemsLeft(1);
+        assertItemsLeft(2);
     }
 
     ElementsCollection tasks = $$("#todo-list li");
