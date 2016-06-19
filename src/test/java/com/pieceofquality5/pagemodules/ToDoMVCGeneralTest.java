@@ -2,9 +2,9 @@ package com.pieceofquality5.pagemodules;
 
 import org.junit.Test;
 
-import static com.pieceofquality5.pagemodules.pages.ToDoMVCPage.TaskType.ACTIVE;
-import static com.pieceofquality5.pagemodules.pages.ToDoMVCPage.TaskType.COMPLETED;
-import static com.pieceofquality5.pagemodules.pages.ToDoMVCPage.*;
+import static com.pieceofquality5.pagemodules.pages.ToDoMVC.TaskType.ACTIVE;
+import static com.pieceofquality5.pagemodules.pages.ToDoMVC.TaskType.COMPLETED;
+import static com.pieceofquality5.pagemodules.pages.ToDoMVC.*;
 
 public class ToDoMVCGeneralTest extends BaseTest {
 

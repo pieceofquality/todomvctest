@@ -15,6 +15,7 @@ public class BaseTest {
     public void tearDown() throws IOException {
         screenshot();
     }
+
     @Attachment
     public byte[] screenshot() throws IOException {
         File screenshot = Screenshots.takeScreenShotAsFile();

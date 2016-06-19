@@ -43,9 +43,11 @@ public class ToDoMVCTest extends BaseTest {
         clearCompleted();
         assertNoTasks();
     }
+
     @Test
     public void testAddAtAll(){
         given();
+
         add("1");
         assertTasks("1");
         assertItemsLeft(1);
@@ -106,6 +108,23 @@ public class ToDoMVCTest extends BaseTest {
     }
 
     @Test
+    public void testDeleteByEmptyAtAll() {
+        givenAtAll(ACTIVE, "1", "2");
+
+        startEdit("1", "").pressEnter();
+        assertItemsLeft(1);
+    }
+
+    @Test
+    public void testCancelEditAtAll() {
+        givenAtAll(ACTIVE, "1");
+
+        startEdit("1", "1 cancelled").pressEscape();
+        assertTasks("1");
+        assertItemsLeft(1);
+    }
+
+    @Test
     public void testAddAtActive(){
         givenAtActive(ACTIVE, "1");
 
@@ -113,6 +132,7 @@ public class ToDoMVCTest extends BaseTest {
         assertVisibleTasks("1", "2");
         assertItemsLeft(2);
     }
+
     @Test
     public void testDeleteAtActive(){
         givenAtActive(ACTIVE, "1");
@@ -140,8 +160,43 @@ public class ToDoMVCTest extends BaseTest {
     }
 
     @Test
-    public void testEditAtCompleted() {
+    public void testCompleteAllAtActive(){
+        givenAtActive(ACTIVE, "1", "2");
 
+        toggleAll();
+        assertNoVisibleTasks();
+        assertItemsLeft(0);
+    }
+
+    @Test
+    public void testClearCompletedAtActive(){
+        givenAtActive(aTask("1", ACTIVE), aTask("2", COMPLETED));
+
+        clearCompleted();
+        assertVisibleTasks("1");
+        assertItemsLeft(1);
+    }
+
+    @Test
+    public void testEditByPressTabAtActive() {
+        givenAtActive(ACTIVE, "1");
+
+        startEdit("1", "1 edited").pressTab();
+        assertTasks("1 edited");
+        assertItemsLeft(1);
+    }
+
+    @Test
+    public void testCancelEditAtActive() {
+        givenAtActive(ACTIVE, "1");
+
+        startEdit("1", "1 cancelled").pressEscape();
+        assertTasks("1");
+        assertItemsLeft(1);
+    }
+
+    @Test
+    public void testEditAtCompleted() {
         givenAtCompleted(aTask("1", ACTIVE), aTask("2", COMPLETED));
 
         startEdit("2", "2 edited").pressEnter();
@@ -151,9 +206,8 @@ public class ToDoMVCTest extends BaseTest {
 
     @Test
     public void testClearCompletedAllAtCompleted() {
-        givenAtCompleted(aTask("1", COMPLETED), aTask("2", COMPLETED));
+        givenAtCompleted(aTask("1", ACTIVE), aTask("2", COMPLETED));
 
-        toggle("1");
         clearCompleted();
         assertNoVisibleTasks();
         assertItemsLeft(1);
@@ -184,23 +238,6 @@ public class ToDoMVCTest extends BaseTest {
         startEdit("1", "1 cancelled").pressEscape();
         assertVisibleTasks("1");
         assertItemsLeft(0);
-    }
-
-    @Test
-    public void testDeleteByEmptyAtAll() {
-        givenAtAll(ACTIVE, "1");
-
-        startEdit("1", "").pressEnter();
-        assertNoTasks();
-    }
-
-    @Test
-    public void testEditByPressTabAtActive() {
-        givenAtActive(ACTIVE, "1");
-
-        startEdit("1", "1 edited").pressTab();
-        assertTasks("1 edited");
-        assertItemsLeft(1);
     }
 
     @Test

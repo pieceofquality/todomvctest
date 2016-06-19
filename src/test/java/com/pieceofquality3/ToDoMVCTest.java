@@ -15,7 +15,6 @@ public class ToDoMVCTest extends AtTodoMVCPageWithClearedDataAfterEachTest {
 
     @Test
     public void testTasksFlow() {
-//        Configuration.pageLoadStrategy = "normal";
         open("https://todomvc4tasj.herokuapp.com/");
 
         add("1");

@@ -3,15 +3,14 @@ package com.pieceofquality5.pagemodules;
 import org.junit.Test;
 
 import static com.codeborne.selenide.Selenide.$;
-import static com.pieceofquality5.pagemodules.pages.ToDoMVCPage.TaskType.ACTIVE;
-import static com.pieceofquality5.pagemodules.pages.ToDoMVCPage.TaskType.COMPLETED;
-import static com.pieceofquality5.pagemodules.pages.ToDoMVCPage.*;
+import static com.pieceofquality5.pagemodules.pages.ToDoMVC.TaskType.ACTIVE;
+import static com.pieceofquality5.pagemodules.pages.ToDoMVC.TaskType.COMPLETED;
+import static com.pieceofquality5.pagemodules.pages.ToDoMVC.*;
 
 public class ToDoMVCCompletedFilterTest extends BaseTest{
 
     @Test
     public void testEditAtCompleted() {
-
         givenAtCompleted(aTask("1", ACTIVE), aTask("2", COMPLETED));
 
         startEdit("2", "2 edited").pressEnter();
@@ -21,9 +20,8 @@ public class ToDoMVCCompletedFilterTest extends BaseTest{
 
     @Test
     public void testClearCompletedAllAtCompleted() {
-        givenAtCompleted(aTask("1", COMPLETED), aTask("2", COMPLETED));
+        givenAtCompleted(aTask("1", ACTIVE), aTask("2", COMPLETED));
 
-        toggle("1");
         clearCompleted();
         assertNoVisibleTasks();
         assertItemsLeft(1);
@@ -65,6 +63,4 @@ public class ToDoMVCCompletedFilterTest extends BaseTest{
         assertTasks("1 edited");
         assertItemsLeft(0);
     }
-
-
 }

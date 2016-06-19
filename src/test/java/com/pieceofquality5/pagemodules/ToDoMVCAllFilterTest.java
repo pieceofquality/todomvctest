@@ -2,18 +2,17 @@ package com.pieceofquality5.pagemodules;
 
 import org.junit.Test;
 
-import static com.pieceofquality5.pagemodules.pages.ToDoMVCPage.TaskType.ACTIVE;
-import static com.pieceofquality5.pagemodules.pages.ToDoMVCPage.TaskType.COMPLETED;
-import static com.pieceofquality5.pagemodules.pages.ToDoMVCPage.*;
+import static com.pieceofquality5.pagemodules.pages.ToDoMVC.TaskType.ACTIVE;
+import static com.pieceofquality5.pagemodules.pages.ToDoMVC.TaskType.COMPLETED;
+import static com.pieceofquality5.pagemodules.pages.ToDoMVC.*;
 
-/**
- * Created by piece on 19.06.2016.
- */
+
 public class ToDoMVCAllFilterTest extends BaseTest{
 
     @Test
     public void testAddAtAll(){
         given();
+
         add("1");
         assertTasks("1");
         assertItemsLeft(1);
@@ -75,9 +74,18 @@ public class ToDoMVCAllFilterTest extends BaseTest{
 
     @Test
     public void testDeleteByEmptyAtAll() {
-        givenAtAll(ACTIVE, "1");
+        givenAtAll(ACTIVE, "1", "2");
 
         startEdit("1", "").pressEnter();
-        assertNoTasks();
+        assertItemsLeft(1);
+    }
+
+    @Test
+    public void testCancelEditAtAll() {
+        givenAtAll(ACTIVE, "1");
+
+        startEdit("1", "1 cancelled").pressEscape();
+        assertTasks("1");
+        assertItemsLeft(1);
     }
 }
