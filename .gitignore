@@ -1,6 +1,4 @@
 todomvctest.iml
 .idea
 build
-src/main/
 target/
-/todomvctest.iml

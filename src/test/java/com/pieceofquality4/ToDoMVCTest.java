@@ -112,6 +112,7 @@ public class ToDoMVCTest extends BaseTest {
         givenAtAll(ACTIVE, "1", "2");
 
         startEdit("1", "").pressEnter();
+        assertTasks("2");
         assertItemsLeft(1);
     }
 
@@ -245,7 +246,7 @@ public class ToDoMVCTest extends BaseTest {
         givenAtCompleted(COMPLETED, "1");
 
         startEdit("1", "1 edited");
-        $("#new-todo").click();
+        newTask.click();
         assertTasks("1 edited");
         assertItemsLeft(0);
     }
@@ -279,9 +280,11 @@ public class ToDoMVCTest extends BaseTest {
 
     ElementsCollection tasks = $$("#todo-list li");
 
+    SelenideElement newTask = $("#new-todo");
+
     private void add(String... taskTexts) {
         for (String text : taskTexts) {
-            $("#new-todo").setValue(text).pressEnter();
+            newTask.setValue(text).pressEnter();
         }
     }
 
