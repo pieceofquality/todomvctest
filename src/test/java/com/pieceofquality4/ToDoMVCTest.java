@@ -67,7 +67,7 @@ public class ToDoMVCTest extends BaseTest {
         givenAtAll(aTask("1", ACTIVE), aTask("2", COMPLETED));
 
         startEdit("2", "2 edited").pressEnter();
-        assertVisibleTasks("1", "2 edited");
+        assertTasks("1", "2 edited");
         assertItemsLeft(1);
     }
 
