@@ -12,6 +12,7 @@ import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.Selenide.refresh;
 import static com.codeborne.selenide.WebDriverRunner.url;
+import static com.pieceofquality.Helpers.*;
 
 /**
  * Created by piece on 19.06.2016.
@@ -27,7 +28,7 @@ public  class ToDoMVCPage {
     }
 
     public SelenideElement startEdit(String oldTaskText, String newTaskText) {
-        tasks.find(exactText(oldTaskText)).doubleClick();
+        doubleClick(tasks.find(exactText(oldTaskText)).find("label"));
         return tasks.find(cssClass("editing")).$(".edit").setValue(newTaskText);
     }
 

@@ -18,7 +18,7 @@ public class BaseTest {
 
     @Attachment
     public byte[] screenshot() throws IOException {
-        File screenshot = Screenshots.takeScreenShotAsFile();
+        File screenshot = Screenshots.getScreenShotAsFile();
         return Files.toByteArray(screenshot);
     }
 }

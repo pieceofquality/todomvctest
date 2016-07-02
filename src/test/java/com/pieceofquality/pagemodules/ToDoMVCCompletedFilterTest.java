@@ -6,6 +6,7 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.pieceofquality.pagemodules.pages.ToDoMVC.TaskType.ACTIVE;
 import static com.pieceofquality.pagemodules.pages.ToDoMVC.TaskType.COMPLETED;
 import static com.pieceofquality.pagemodules.pages.ToDoMVC.*;
+import static org.openqa.selenium.Keys.ESCAPE;
 
 public class ToDoMVCCompletedFilterTest extends BaseTest{
 
@@ -49,7 +50,7 @@ public class ToDoMVCCompletedFilterTest extends BaseTest{
     public void testCancelEditAtCompleted() {
         givenAtCompleted(COMPLETED, "1");
 
-        startEdit("1", "1 cancelled").pressEscape();
+        startEdit("1", "1 cancelled").sendKeys(ESCAPE);
         assertVisibleTasks("1");
         assertItemsLeft(0);
     }

@@ -5,6 +5,7 @@ import org.junit.Test;
 import static com.pieceofquality.pagemodules.pages.ToDoMVC.TaskType.ACTIVE;
 import static com.pieceofquality.pagemodules.pages.ToDoMVC.*;
 import static com.pieceofquality.pagemodules.pages.ToDoMVC.TaskType.COMPLETED;
+import static org.openqa.selenium.Keys.ESCAPE;
 
 /**
  * Created by piece on 19.06.2016.
@@ -77,7 +78,7 @@ public class ToDoMVCActiveFilterTest extends BaseTest{
     public void testCancelEditAtActive() {
         givenAtActive(ACTIVE, "1");
 
-        startEdit("1", "1 cancelled").pressEscape();
+        startEdit("1", "1 cancelled").sendKeys(ESCAPE);
         assertTasks("1");
         assertItemsLeft(1);
     }
