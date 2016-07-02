@@ -1,4 +1,4 @@
-package com.pieceofquality5.pagemodules.pages;
+package com.pieceofquality.pageobjects.pages;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
@@ -6,80 +6,83 @@ import org.openqa.selenium.By;
 
 import static com.codeborne.selenide.CollectionCondition.empty;
 import static com.codeborne.selenide.CollectionCondition.exactTexts;
-import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Condition.cssClass;
+import static com.codeborne.selenide.Condition.exactText;
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.Selenide.refresh;
 import static com.codeborne.selenide.WebDriverRunner.url;
 
 /**
  * Created by piece on 19.06.2016.
  */
-public class ToDoMVC {
+public  class ToDoMVCPage {
 
-    public static ElementsCollection tasks = $$("#todo-list li");
+    ElementsCollection tasks = $$("#todo-list li");
 
-    public static void add(String... taskTexts) {
+    public void add(String... taskTexts) {
         for (String text : taskTexts) {
             $("#new-todo").setValue(text).pressEnter();
         }
     }
 
-    public static SelenideElement startEdit(String oldTaskText, String newTaskText) {
+    public SelenideElement startEdit(String oldTaskText, String newTaskText) {
         tasks.find(exactText(oldTaskText)).doubleClick();
         return tasks.find(cssClass("editing")).$(".edit").setValue(newTaskText);
     }
 
-    public static void delete(String taskText) {
+    public void delete(String taskText) {
         tasks.find(exactText(taskText)).hover().$(".destroy").click();
     }
 
-    public static void toggle(String taskText) {
+    public void toggle(String taskText) {
         tasks.find(exactText(taskText)).$(".toggle").click();
     }
 
-    public static void toggleAll() {
+    public void toggleAll() {
         $("#toggle-all").click();
     }
 
-    public static void clearCompleted() {
+    public void clearCompleted() {
         $("#clear-completed").click();
         $("#clear-completed").shouldNotBe(visible);
     }
 
-    public static void filterAll() {
+    public void filterAll() {
         $(By.linkText("All")).click();
     }
 
-    public static void filterActive() {
+    public void filterActive() {
         $(By.linkText("Active")).click();
     }
 
-    public static void filterCompleted() {
+    public void filterCompleted() {
         $(By.linkText("Completed")).click();
     }
 
-    public static void assertTasks(String... taskTexts) {
+    public void assertTasks(String... taskTexts) {
         tasks.shouldHave(exactTexts(taskTexts));
     }
 
-    public static void assertNoTasks() {
+    public void assertNoTasks() {
         tasks.shouldBe(empty);
     }
 
-    public static void assertVisibleTasks(String... tasksTexts) {
+    public void assertVisibleTasks(String... tasksTexts) {
         tasks.filter(visible).shouldHave(exactTexts(tasksTexts));
     }
 
-    public static void assertNoVisibleTasks() {
+    public void assertNoVisibleTasks() {
         tasks.filter(visible).shouldBe(empty);
     }
 
-    public static void assertItemsLeft(int count) {
+    public void assertItemsLeft(int count) {
         $("#todo-count>strong").shouldHave(exactText(Integer.toString(count)));
     }
 
     // pre-conditions
 
-    public static void ensurePageOpened(){
+    public void ensurePageOpened(){
         if (! url().equals("https://todomvc4tasj.herokuapp.com/")) {
             open("https://todomvc4tasj.herokuapp.com/");
         }
@@ -99,7 +102,7 @@ public class ToDoMVC {
         }
     }
 
-    public static class Task {
+    public class Task {
         String taskText;
         TaskType taskType;
 
@@ -109,21 +112,21 @@ public class ToDoMVC {
         }
     }
 
-    public static void givenAtAll(Task... tasks) {
+    public void givenAtAll(Task... tasks) {
         given(tasks);
     }
 
-    public static void givenAtActive(Task... tasks) {
+    public void givenAtActive(Task... tasks) {
         given(tasks);
         filterActive();
     }
 
-    public static void givenAtCompleted(Task... tasks) {
+    public void givenAtCompleted(Task... tasks) {
         given(tasks);
         filterCompleted();
     }
 
-    public static void givenAtAll(TaskType taskType, String... taskTexts) {
+    public void givenAtAll(TaskType taskType, String... taskTexts) {
         Task[] tasks = new Task[taskTexts.length];
         for (int i = 0; i < tasks.length; i++) {
             tasks[i] = new Task(taskTexts[i], taskType);
@@ -131,17 +134,17 @@ public class ToDoMVC {
         given(tasks);
     }
 
-    public static void givenAtActive(TaskType taskType, String... taskTexts) {
+    public void givenAtActive(TaskType taskType, String... taskTexts) {
         givenAtAll(taskType, taskTexts);
         filterActive();
     }
 
-    public static void givenAtCompleted(TaskType taskType, String... taskTexts) {
+    public void givenAtCompleted(TaskType taskType, String... taskTexts) {
         givenAtAll(taskType, taskTexts);
         filterCompleted();
     }
 
-    public static void given(Task... tasks) {
+    public void given(Task... tasks) {
 
         ensurePageOpened();
         String elements = "localStorage.setItem('todos-troopjs', '[";
@@ -156,7 +159,7 @@ public class ToDoMVC {
         refresh();
     }
 
-    public static Task aTask(String taskText, TaskType taskType) {
+    public Task aTask(String taskText, TaskType taskType) {
         return new Task(taskText, taskType);
     }
 }

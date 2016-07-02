@@ -1,10 +1,10 @@
-package com.pieceofquality5.pagemodules;
+package com.pieceofquality.pagemodules;
 
 import org.junit.Test;
 
-import static com.pieceofquality5.pagemodules.pages.ToDoMVC.TaskType.ACTIVE;
-import static com.pieceofquality5.pagemodules.pages.ToDoMVC.TaskType.COMPLETED;
-import static com.pieceofquality5.pagemodules.pages.ToDoMVC.*;
+import static com.pieceofquality.pagemodules.pages.ToDoMVC.TaskType.ACTIVE;
+import static com.pieceofquality.pagemodules.pages.ToDoMVC.TaskType.COMPLETED;
+import static com.pieceofquality.pagemodules.pages.ToDoMVC.*;
 
 public class ToDoMVCGeneralTest extends BaseTest {
 

@@ -1,11 +1,11 @@
-package com.pieceofquality5.pageobjects;
+package com.pieceofquality.pageobjects;
 
-import com.pieceofquality5.pageobjects.pages.ToDoMVCPage;
+import com.pieceofquality.pageobjects.pages.ToDoMVCPage;
 import org.junit.Test;
 
 import static com.codeborne.selenide.Selenide.$;
-import static com.pieceofquality5.pageobjects.pages.ToDoMVCPage.TaskType.ACTIVE;
-import static com.pieceofquality5.pageobjects.pages.ToDoMVCPage.TaskType.COMPLETED;
+import static com.pieceofquality.pageobjects.pages.ToDoMVCPage.TaskType.ACTIVE;
+import static com.pieceofquality.pageobjects.pages.ToDoMVCPage.TaskType.COMPLETED;
 
 public class ToDoMVCCompletedFilterTest extends BaseTest {
 
