@@ -33,7 +33,8 @@ public  class ToDoMVCPage {
     }
 
     public void delete(String taskText) {
-        tasks.find(exactText(taskText)).hover().$(".destroy").click();
+        tasks.find(exactText(taskText)).hover();
+        tasks.find(exactText(taskText)).$(".destroy").click();
     }
 
     public void toggle(String taskText) {
